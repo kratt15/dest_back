@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\StoreController;
 use App\Http\Controllers\Api\ManagerController;
@@ -189,6 +190,9 @@ Route::middleware('auth:sanctum')->group(function () {
         )->middleware('role:admin');
         Route::get('/search', 'search')->name('search')->middleware('role:admin|gerant|user');
     });
+
+    // --- FIN BRANDS -----
+
 
     // ----- ARTICLES -----
 

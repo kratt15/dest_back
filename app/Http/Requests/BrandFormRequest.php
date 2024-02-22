@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BrandFromRequest extends FormRequest
 {
@@ -23,7 +27,6 @@ class BrandFromRequest extends FormRequest
     {
         return [
             //
-
                 'title' => ['required', 'string', Rule::unique('brands')->ignore($this->route()->parameter('brand'))],
 
         ];
@@ -35,4 +38,12 @@ class BrandFromRequest extends FormRequest
             'title.unique' => "Le titre doit être unique. Ce titre est déjà utilisé.",
         ];
     }
+
+      // Envoyer les messages d'erreur sous format json
+      protected function failedValidation(Validator $validator)
+      {
+          throw new HttpResponseException(
+              response()->json(['errors' => $validator->errors()], JsonResponse::HTTP_BAD_REQUEST)
+          );
+      }
 }
