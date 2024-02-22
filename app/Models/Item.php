@@ -21,7 +21,7 @@ class Item extends Model
     protected $fillable = [
         'name',
         'reference',
-        'expiration_date',
+        // 'expiration_date',
         'cost',
         'price',
         'description'
@@ -87,7 +87,7 @@ class Item extends Model
 
             'name' => $this->name,
             'reference' => $this->reference,
-            'expiration_date' => $this->expiration_date,
+            // 'expiration_date' => $this->expiration_date,
             'cost' => $this->cost,
             'price' => $this->price,
             'description' => $this->description,

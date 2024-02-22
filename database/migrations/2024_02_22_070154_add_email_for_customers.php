@@ -14,7 +14,7 @@ return new class extends Migration
         //
         Schema::table('customers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->string('email')->nullable();
+            $table->string('email_customer')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
     {
         //
         Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn('email');
+            $table->dropColumn('email_customer');
         });
-        
+
     }
 };

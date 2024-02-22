@@ -20,6 +20,7 @@ class Customer extends Model
         'name_customer',
         'phone_customer',
         'address_customer',
+        'email_customer',
     ];
 
     //// LINKS
@@ -42,6 +43,7 @@ class Customer extends Model
             'name_customer' => $this->name_customer,
             'phone_customer' => $this->phone_customer,
             'address_customer' => $this->address_customer,
+            'email_customer' => $this->email_customer,
 
         ];
 
