@@ -34,6 +34,7 @@ class ItemFormRequest extends FormRequest
             'description' => [ 'string'],
             'category_title' => ['required', 'string'],
             'provider_name' => ['required', 'string'],
+            'brand_name' => ['required', 'string'],
             // 'stores_names' => ['array'],
             // 'quantities' => ['array'],
             // 'security_quantities' => ['array'],
@@ -47,7 +48,7 @@ class ItemFormRequest extends FormRequest
     public function messages(): array
     {
         return [
-            
+
             'name.required' => "Veuillez remplir ce champ.",
 
             'name.unique' => "Le nom de l'article doit être unique. Ce nom est déjà utilisé.",
@@ -62,11 +63,15 @@ class ItemFormRequest extends FormRequest
 
             'price.required' => "Veuillez remplir ce champ.",
 
+            'quantity.required' => "Veuillez remplir ce champ.",
+
             // 'description.required' => "Veuillez remplir ce champ.",
 
             'category_title.required' => "Veuillez remplir ce champ.",
 
             'provider_name.required' => "Veuillez remplir ce champ.",
+
+            'brand_name.required' => "Veuillez remplir ce champ.",
         ];
     }
 

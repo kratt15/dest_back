@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Item;
+use App\Models\Order;
+use App\Models\Store;
+use App\Models\Brands;
+use App\Models\Calendar;
+use App\Models\Category;
+use App\Models\Provider;
+use App\Models\Purchase;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ItemFormRequest;
 use App\Http\Requests\TransferItemFormRequest;
-use App\Models\Calendar;
-use App\Models\Category;
-use App\Models\Item;
-use App\Models\Order;
-use App\Models\Provider;
-use App\Models\Purchase;
-use App\Models\Store;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class ItemController extends Controller
 {
@@ -45,10 +46,11 @@ class ItemController extends Controller
 
             // Ajouter l'article à la liste
             $list[] = [
+
                 'id' => $item->id,
                 'name' => $item->name,
                 'reference' => $item->reference,
-                'expiration_date' => $item->expiration_date,
+                // 'expiration_date' => $item->expiration_date,
                 'cost' => $item->cost,
                 'price' => $item->price,
                 'totalAvailableQuantity' => $totalAvailableQuantity,
@@ -57,6 +59,7 @@ class ItemController extends Controller
                 'provider' => $provider,
                 'updated_at' => $item->updated_at,
                 'created_at' => $item->created_at,
+
             ];
         }
 
@@ -512,6 +515,9 @@ class ItemController extends Controller
         // Récupérer la catégorie
         $category = Category::where('title', $request->input('category_title'))->first();
 
+        // récuperer la marque
+        $brand = Brands::where('name', $request->input('brand_name'))->first();
+
         // Récupérer le fournisseur
         $provider = Provider::where('name_provider', $request->input('provider_name'))->first();
 
@@ -519,7 +525,7 @@ class ItemController extends Controller
         $item = Item::create([
             'name' => $request->input('name'),
             'reference' => $request->input('reference'),
-            'expiration_date' => $request->input('expiration_date'),
+            // 'expiration_date' => $request->input('expiration_date'),
             'cost' => $request->input('cost'),
             'price' => $request->input('price'),
             'description' => $request->input('description'),
@@ -530,6 +536,9 @@ class ItemController extends Controller
 
         // Lier l'article à son fournisseur
         $item->provider()->associate($provider);
+
+        // Lier l'article à sa marque
+        $item->brand()->associate($brand);
 
         // Sauvegarder les associations
         $item->save();
@@ -579,7 +588,7 @@ class ItemController extends Controller
 
             'name' => $request->input('name'),
             'reference' => $request->input('reference'),
-            'expiration_date' => $request->input('expiration_date'),
+            // 'expiration_date' => $request->input('expiration_date'),
             'cost' => $request->input('cost'),
             'price' => $request->input('price'),
             'description' => $request->input('description'),
@@ -591,6 +600,9 @@ class ItemController extends Controller
         // Récupérer le fournisseur
         $provider_name = $request->input('provider_name');
 
+        // Récupérer la marque
+        $brand = $request->input('brand_name');
+
         // Lier l'article à sa nouvelle catégorie=
         $category = Category::where('title', $category_title)->first();
         $item->category()->associate($category);
@@ -599,6 +611,9 @@ class ItemController extends Controller
         $provider = Provider::where('name_provider', $provider_name)->first();
         $item->provider()->associate($provider);
 
+        // Lier l'article à sa nouvelle marque
+        $brand = Brands::where('name', $brand)->first();
+        $item->brand()->associate($brand);
         // Sauvegarder les associations
         $item->save();
 
