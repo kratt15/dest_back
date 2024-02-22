@@ -36,6 +36,7 @@ class CustomerFormRequest extends FormRequest
 
             ],
             'address_customer' => ['string','max:200'],
+            'email_customer' => ['string', 'email', 'max:100', Rule::unique('customers')->ignore($this->route()->parameter('customer'))],
 
         ];
     }
@@ -54,6 +55,12 @@ class CustomerFormRequest extends FormRequest
             'phone_customer.max' => "Le numéro de numéro doit avoir moins de 20 caractères.",
 
             'adress_customer.max' => "L'adresse doit avoir moins de 200 caractères.",
+
+            'email_customer.unique' => "L'email doit être unique. Cet email est déjà utilisé.",
+
+            'email_customer.email' => "L'email doit être valide.",
+
+            'email_customer max' => "L'email doit avoir moins de 100 caractères.",
         ];
     }
 

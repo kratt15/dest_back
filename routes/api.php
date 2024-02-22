@@ -171,6 +171,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // ----- FIN CATEGORIES -----
 
+    // ----- BRANDS -----
+
+    Route::prefix('/marque')->controller(BrandController::class)->name('brand.')->group(function () {
+
+        Route::get('/list', 'list')->name('list')->middleware('role:admin|gerant');
+        Route::post('/add', 'store')->middleware('role:admin');
+        Route::put('/{brand}/edit', 'update')->where(
+            [
+                'brand' => '[0-9]+',
+            ]
+        )->middleware('role:admin');
+        Route::delete('/{brand}/delete', 'delete')->where(
+            [
+                'brand' => '[0-9]+',
+            ]
+        )->middleware('role:admin');
+        Route::get('/search', 'search')->name('search')->middleware('role:admin|gerant|user');
+    });
 
     // ----- ARTICLES -----
 
