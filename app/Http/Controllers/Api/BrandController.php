@@ -11,7 +11,7 @@ use App\Http\Requests\BrandFormRequest;
 class BrandController extends Controller
 {
     //
-    public function list(BrandFormRequest $request): JsonResponse
+    public function list(): JsonResponse
     {
         $brands = Brands::orderByDesc('created_at')->get();
 

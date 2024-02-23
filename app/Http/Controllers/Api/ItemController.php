@@ -516,7 +516,7 @@ class ItemController extends Controller
         $category = Category::where('title', $request->input('category_title'))->first();
 
         // récuperer la marque
-        $brand = Brands::where('name', $request->input('brand_name'))->first();
+        $brand = Brands::where('title', $request->input('brand_title'))->first();
 
         // Récupérer le fournisseur
         $provider = Provider::where('name_provider', $request->input('provider_name'))->first();
@@ -538,7 +538,7 @@ class ItemController extends Controller
         $item->provider()->associate($provider);
 
         // Lier l'article à sa marque
-        $item->brand()->associate($brand);
+        $item->brands()->associate($brand);
 
         // Sauvegarder les associations
         $item->save();
@@ -601,7 +601,7 @@ class ItemController extends Controller
         $provider_name = $request->input('provider_name');
 
         // Récupérer la marque
-        $brand = $request->input('brand_name');
+        $brand = $request->input('brand_title');
 
         // Lier l'article à sa nouvelle catégorie=
         $category = Category::where('title', $category_title)->first();
@@ -612,8 +612,8 @@ class ItemController extends Controller
         $item->provider()->associate($provider);
 
         // Lier l'article à sa nouvelle marque
-        $brand = Brands::where('name', $brand)->first();
-        $item->brand()->associate($brand);
+        $brand = Brands::where('title', $brand)->first();
+        $item->brands()->associate($brand);
         // Sauvegarder les associations
         $item->save();
 

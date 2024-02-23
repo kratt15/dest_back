@@ -2,7 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Order;
+use App\Models\Store;
 use App\Models\Brands;
+use App\Models\Calendar;
+use App\Models\Category;
+use App\Models\Provider;
+use App\Models\Purchase;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,7 +41,7 @@ class Item extends Model
         return $this->belongsTo(Category::class)->withTrashed();
     }
     // un article a une seule marque
-    public function brand(): BelongsTo
+    public function brands(): BelongsTo
     {
         return $this->belongsTo(Brands::class)->withTrashed();
     }
