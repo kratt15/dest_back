@@ -22,4 +22,4 @@ Route::get('/', function () {
 
 Route::get('/invoice/show/{ref_purchase}', [invoiceController::class, 'show'])->name('invoice.show');
 Route::get('/get_items_list_for_store', [ArticleListeController::class, 'getItemsListFromStore'])->name('get_items_list_for_store');
-
+Route::get('/supply_list', [ArticleListeController::class, 'supplyFlowList'])->name('supply_list');

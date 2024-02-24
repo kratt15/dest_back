@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Order;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -92,4 +93,74 @@ class ArticleListeController extends Controller
         $pdf = Pdf::loadView('listes.articleParMag', ['data' => $itemsJson]);
         return $pdf->stream();
     }
+
+    public function supplyFlowList($startDate = null, $endDate = null)
+{
+    $ordersQuery = Order::with('items')->orderBy('created_at', 'desc');
+
+    if ($startDate && $endDate) {
+        // Si les dates de début et de fin sont spécifiées, filtrer les commandes en conséquence
+        $ordersQuery->whereBetween('created_at', [$startDate, $endDate]);
+    } elseif (!$startDate && !$endDate) {
+        // Si aucune date n'est spécifiée, récupérer les 20 dernières commandes
+        $ordersQuery->take(20);
+    }
+
+    // Récupérer les commandes
+    $orders = $ordersQuery->get();
+
+    // Initialisation de la liste
+    $supply_list = [];
+
+    // Type de mouvement
+    $movement = "Approvisionnement";
+
+    // Approvisionnements
+    foreach ($orders as $order) {
+        // Vos traitements ici...
+
+           // Nom du magasin
+           $store_name = $order->store->name;
+
+           // Date de création de la commande
+           $created_at = $order->created_at;
+
+           // Date de livraison
+           $reception_date = ($order->reception_date === null) ? 'Non reçu' : $order->reception_date;
+
+           // Date prévue de la livraison
+           $predicted_date = $order->predicted_date;
+
+           // Articles liés à cette commande
+           $items = $order->items;
+
+           // Remplir la liste des approvisionnements
+           foreach ($items as $item) {
+               // Nom de l'article
+               $item_name = $item->name;
+
+               // Quantité fournie
+               $quantity = $item->pivot->quantity;
+
+               // Nom du fournisseur
+               $provider_name = $item->provider->name_provider;
+
+               $supply_list[] = [
+                   'movement' => $movement,
+                   'store_name' => $store_name,
+                   'item_name' => $item_name,
+                   'quantity' => $quantity,
+                   'provider_name' => $provider_name,
+                   "reception_date" => $reception_date,
+                   'predicted_date' => $predicted_date,
+                   'created_at' => $created_at,
+               ];
+           }
+    }
+    $pdf = Pdf::loadView('listes.approvionnement',compact('supply_list'));
+    return $pdf->stream();
+    // return view('listes.approvionnement',compact('supply_list'));
 }
+
+}
+
