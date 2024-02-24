@@ -175,6 +175,7 @@ class ItemController extends Controller
         //             'updated_at' => $item[0]->updated_at,
         //         ];
         //     }
+
         // Récupérer le tableau du magasin choisi
         $stores = Store::with('items_stock')->where('id', $store->id)->get();
 
@@ -199,13 +200,13 @@ class ItemController extends Controller
                     $list[] = [
                         'name' => $item->name,
                         'reference' => $item->reference,
-                        'expiration_date' => $item->expiration_date,
-                        'cost' => $item->cost,
-                        'price' => $item->price,
+                        // 'cost' => $item->cost,
+                        // 'price' => $item->price,
                         'quantity' => $quantity,
-                        'category' => $item->category->title,
-                        'provider' => $item->provider->name_provider,
-                        'updated_at' => $item->updated_at,
+                        // 'security_quantity' => $item->security_quantity,
+                        // 'category' => $item->category->title,
+                        // 'provider' => $item->provider->name_provider,
+                        // 'updated_at' => $item->updated_at,
                     ];
                 }
             }
@@ -219,6 +220,42 @@ class ItemController extends Controller
 
         return response()->json($list);
     }
+
+
+
+    // Liste des articles par magasin
+
+
+    // public function listParStore(): JsonResponse
+    // {
+    //     // recupérer la liste des magasins
+    //     $Store = Store::All();
+
+    //     // Ranger les articles par magasin
+    //     foreach ($Store as $store) {
+    //         $this->sortByStore($store);
+    //     }
+    // }
+
+    public function listParStore(): JsonResponse
+{
+    // Initialisation de la liste des articles à afficher
+    $allItems = [];
+
+    // Récupérer la liste des magasins
+    $stores = Store::all();
+
+    // Récupérer les articles pour chaque magasin et les ajouter à la liste
+    foreach ($stores as $store) {
+        $itemsForStore = $this->sortByStore($store);
+        $allItems[$store->name] = $itemsForStore;
+    }
+
+    return response()->json($allItems);
+}
+
+
+
 
     // Transfert d'articles d'un magasin à un autre
     public function transfer(TransferItemFormRequest $request, Store $store): JsonResponse

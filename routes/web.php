@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\invoiceController;
+use App\Http\Controllers\ArticleListeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,5 @@ Route::get('/', function () {
 });
 
 Route::get('/invoice/show/{ref_purchase}', [invoiceController::class, 'show'])->name('invoice.show');
+Route::get('/get_items_list_for_store', [ArticleListeController::class, 'getItemsListFromStore'])->name('get_items_list_for_store');
 

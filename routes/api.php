@@ -204,6 +204,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/sort_by_category', 'sortByCategory');
         Route::get('/sort_by_provider', 'sortByProvider');
         Route::get('/sort_by_store/{store}', 'sortByStore');
+        Route::get('/article_par_mag/list', 'listParStore');
         Route::get('/supply_list', 'supplyList'); // Liste des approvisionnements par ordre décroissant
         Route::get('/sales_list', 'salesList'); // Liste des ventes par ordre décroissant
         Route::get('/open_sales_list', 'openSalesList'); // Liste des ventes non soldées par ordre croissant

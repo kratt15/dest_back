@@ -72,15 +72,17 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+
             <div class="card">
                 <div class="card-header">
                     Facture : {{$ref}}
                 </div>
                 <div class="card-body">
                     <div class="row mb-4">
+                        {{ now()->toDateTimeString() }} 
                         <div class="col-sm-6">
                             <h6>De:</h6>
-                            <p>OBA</p>
+                            <h1>La Destinée </h1>
                             <p>Avenue Maman N'danida</p>
                             <p>Lomé, TOGO</p>
                             <p>Email: info@example.com</p>

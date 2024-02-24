@@ -52,6 +52,7 @@ class ItemFormRequest extends FormRequest
 
 
             // 'reference.required' => "Veuillez remplir ce champ.",
+            
             'reference.unique' => "La référence doit être unique. Cette référence est déjà utilisée.",
 
             // 'expiration_date.required' => "Veuillez remplir ce champ.",
