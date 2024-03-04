@@ -137,6 +137,9 @@ class OrderController extends Controller
                 // Coût du produit
                 $item_cost = $order->items()->first()->cost;
 
+                // fournisseur du produit
+                $provider_name = $order->items()->first()->provider->name_provider;
+
                 // Quantité commandée
                 $quantity = $order->items()->first()->pivot->quantity;
 
@@ -156,6 +159,7 @@ class OrderController extends Controller
                     "id" => $order->id,
                     "item_name" => $item_name,
                     "quantity" => $quantity,
+                    "provider_name" => $provider_name,
                     "total_cost" => $total_cost,
                     "store_name" => $store_name,
                     "issue_date" => $issue_date,
@@ -165,6 +169,10 @@ class OrderController extends Controller
                 ];
             }
         }
+
+        usort($orders_table, function ($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
 
         return response()->json($orders_table);
     }

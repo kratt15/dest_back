@@ -94,7 +94,7 @@ class ArticleListeController extends Controller
         return $pdf->stream();
     }
 
-    public function supplyFlowList($startDate = null, $endDate = null)
+    public function supplyFlowListe($startDate = null, $endDate = null)
 {
     $ordersQuery = Order::with('items')->orderBy('created_at', 'desc');
 
