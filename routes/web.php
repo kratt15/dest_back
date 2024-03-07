@@ -23,4 +23,4 @@ Route::get('/', function () {
 Route::get('/invoice/show/{ref_purchase}', [invoiceController::class, 'show'])->name('invoice.show');
 Route::get('/get_items_list_for_store', [ArticleListeController::class, 'getItemsListFromStore'])->name('get_items_list_for_store');
 Route::get('/supply_liste', [ArticleListeController::class, 'supplyFlowListe'])->name('supply_liste');
-Route::get('/sales_liste', [ArticleListeController::class, 'salesFlowListe'])->name('sales_liste');
+Route::get('/sales_liste', [ArticleListeController::class, 'salesFlowList'])->name('sales_liste');

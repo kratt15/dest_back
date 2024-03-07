@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Store;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
@@ -162,5 +163,96 @@ class ArticleListeController extends Controller
     // return view('listes.approvionnement',compact('supply_list'));
 }
 
+
+
+public function salesFlowList()
+    {
+        // Récupérer les achats (vente) rangés par ordre croissant de création
+        $purchases = Purchase::with('items')->orderBy('created_at', 'asc')->get();
+
+        // Initialisation de la liste
+        $sales_list = [];
+
+        // Type de mouvement
+        $movement = "Vente";
+
+        // Ventes
+        foreach ($purchases as $purchase) {
+            // Nom du magasin
+            $store_name = $purchase->store->name;
+
+            // Date de création de la vente
+            $created_at = $purchase->created_at;
+
+            // Articles liés à cet achat
+            $items = $purchase->items()->where('purchase_id', $purchase->id)->get();
+
+            // Nom du client
+            $customer_name = $purchase->customer->name_customer;
+
+            // Vérifier si le client à tout soldé
+            $dueAmount = 0;
+            $items = $purchase->items()->get();
+            foreach ($items as $item) {
+                $item_price = $item->price;
+                $item_qte = $item->purchases()->wherePivot("purchase_id", $purchase->id)->first()->pivot->quantity;
+                $amount = $item_price * $item_qte;
+                $dueAmount += $amount;
+            }
+
+            $paidAmount = 0;
+            $payments = $purchase->payments()->get();
+            foreach ($payments as $payment) {
+                $payment_amount = $payment->amount;
+                $paidAmount += $payment_amount;
+            }
+
+            // Statut de la vente (soldé ou non soldé)
+            if ($purchase->payments()->where('purchase_id', $purchase->id)->exists() && $paidAmount === $dueAmount) {
+                $statut = "Soldé";
+            } else {
+                $statut = "Non soldé";
+            }
+
+            // Remplir la liste des ventes
+            foreach ($items as $item) {
+                // Nom de l'article
+                $item_name = $item->name;
+                // Quantité vendue
+                $quantity = $item->purchases()->wherePivot('purchase_id', $purchase->id)->first()->pivot->quantity;
+
+                $sales_list[] = [
+                    'movement' => $movement,
+                    'store_name' => $store_name,
+                    'item_name' => $item_name,
+                    'quantity' => $quantity,
+                    'customer_name' => $customer_name,
+                    'statut' => $statut,
+                    'created_at' => $created_at,
+                ];
+            }
+        }
+
+        // Récuperer la liste des ventes (non rangée)
+
+        $pdf = Pdf::loadView('listes.ventes',compact('sales_list'));
+        return $pdf->stream();
+        // return $sales_list;
+    }
+
+    // Fonction permettant de récupérer la liste des mouvements d'approvisionnement et de vente (non rangée)
+    private function supplyAndSalesFlowList()
+    {
+        // Récupérer les approvisionnements
+        $supply_list = $this->supplyFlowList();
+
+        // Récupérer les ventes
+        $sales_list = $this->salesFlowList();
+
+        // Réunir les tableaux d'approvisionnement et de vente
+        $supply_sales_list[] = array_merge($supply_list, $sales_list);
+
+        return $supply_sales_list;
+    }
 }
 
