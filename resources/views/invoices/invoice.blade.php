@@ -79,10 +79,11 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-4">
-                        {{ now()->toDateTimeString() }} 
+                        {{ now()->toDateTimeString() }}
                         <div class="col-sm-6">
                             <h6>De:</h6>
                             <h1>La Destinée </h1>
+                            <h3>Magasin : {{$store_name}}</h3>
                             <p>Avenue Maman N'danida</p>
                             <p>Lomé, TOGO</p>
                             <p>Email: info@example.com</p>

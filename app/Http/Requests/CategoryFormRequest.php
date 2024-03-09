@@ -26,7 +26,7 @@ class CategoryFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', Rule::unique('categories')->ignore($this->route()->parameter('category'))],
+            'title' => ['required', 'regex:/^[\pL\s\-]+$/u', 'string', Rule::unique('categories')->ignore($this->route()->parameter('category'))],
         ];
     }
 
@@ -36,6 +36,7 @@ class CategoryFormRequest extends FormRequest
         return [
             'title.required' => "Veuillez remplir ce champ.",
             'title.unique' => "Le titre doit être unique. Ce titre est déjà utilisé.",
+            'title.regex' => "Le titre ne doit pas contenir de caractères speciaux ni de chiffre .",
         ];
     }
 

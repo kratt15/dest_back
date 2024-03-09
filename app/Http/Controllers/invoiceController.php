@@ -41,6 +41,8 @@ class invoiceController extends Controller
     $items = $purchase->items()->withPivot('quantity')->get();
 
     $ref = $purchase->ref_purchase;
+
+    $store_name = $purchase->store->name;
     $items_names = [];
     $quantities = [];
     $price = [];
@@ -68,7 +70,7 @@ class invoiceController extends Controller
 
 
     // return view('invoices.invoice', compact('ref', 'items_names', 'quantities', 'price', 'total', 'dueAmount', 'name', 'phone', 'address', 'totalAmountPaid', 'leftOver'));
-    $pdf= Pdf::loadView('invoices.invoice', compact('ref', 'items_names', 'quantities', 'price', 'total', 'dueAmount', 'name', 'phone', 'address', 'totalAmountPaid', 'leftOver'));
+    $pdf= Pdf::loadView('invoices.invoice', compact('ref', 'items_names', 'quantities', 'price', 'total', 'dueAmount', 'name', 'phone', 'address','store_name' ,'totalAmountPaid', 'leftOver'));
     return $pdf->stream();
 }
 

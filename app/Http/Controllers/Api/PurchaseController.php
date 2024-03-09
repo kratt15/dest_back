@@ -172,6 +172,7 @@ class PurchaseController extends Controller
 
         // Créer l'achat
         $customer_name = $request->input('customer_name');
+        $name_short = substr($customer_name, 0, 3);
         $date = date('YmdHis');
 
         $ref_purchase = sprintf('%s%s', $customer_name, $date);

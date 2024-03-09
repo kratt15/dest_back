@@ -26,16 +26,16 @@ class CustomerFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_customer' => ['required', 'string',Rule::unique('customers')->ignore($this->route()->parameter('customer'))],
+            'name_customer' => ['required', 'regex:/^[\pL\s\-]+$/u','string',Rule::unique('customers')->ignore($this->route()->parameter('customer'))],
             'phone_customer' => [
                 'string',
                 'regex:/^[\+0-9\s]+$/',
                 'min:8',
-                'max:20',
+                'max:15',
                 Rule::unique('customers')->ignore($this->route()->parameter('customer')),
 
             ],
-            'address_customer' => ['string','max:200'],
+            'address_customer' => ['string','max:75'],
             'email_customer' => ['string', 'email', 'max:100', Rule::unique('customers')->ignore($this->route()->parameter('customer'))],
 
         ];
@@ -45,6 +45,8 @@ class CustomerFormRequest extends FormRequest
     {
         return [
             'name_customer.required' => "Veuillez remplir ce champ.",
+
+            'name_customer.regex' => "Le nom du client ne doit pas contenir de caractères speciaux.",
 
             'name_customer.unique' => "Le nom de client doit être unique. Ce nom est déjà utilisé.",
 
