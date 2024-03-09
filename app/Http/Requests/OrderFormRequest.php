@@ -25,7 +25,8 @@ class OrderFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'predicted_date' => ['required', 'date'],
+
+            'predicted_date' => ['required', 'date','after_or_equal:today'],
             'item_name' => ['required', 'string'],
             'quantity' => ['required', 'integer'],
             'store_name' => ['required', 'string'],
@@ -37,6 +38,10 @@ class OrderFormRequest extends FormRequest
     {
         return [
             'predicted_date.required' => "Veuillez remplir ce champ.",
+
+            'predicted_date.date' => "Veuillez saisir une date valide.",
+
+            'predicted_date.after_or_equal' => "Veuillez saisir une date valide.",
 
             'item_name.required' => "Veuillez remplir ce champ.",
 
